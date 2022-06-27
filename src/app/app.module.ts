@@ -13,12 +13,16 @@ import { FormsModule } from '@angular/forms';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CallService } from './call.service';
+import { LoginComponent } from './login/login.component';
+import { VidpanelComponent } from './vidpanel/vidpanel.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    CallInfoDialogComponents
+    CallInfoDialogComponents,
+    LoginComponent,
+    VidpanelComponent
   ],
   imports: [
     BrowserModule,

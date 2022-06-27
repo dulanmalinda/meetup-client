@@ -10,7 +10,7 @@ export class CallService {
 
     private peer: Peer;
     private mediaCall: Peer.MediaConnection;
-  
+
     private localStreamBs: BehaviorSubject<MediaStream> = new BehaviorSubject(null);
     public localStream$ = this.localStreamBs.asObservable();
     private remoteStreamBs: BehaviorSubject<MediaStream> = new BehaviorSubject(null);
@@ -19,7 +19,8 @@ export class CallService {
     private isCallStartedBs = new Subject<boolean>();
     public isCallStarted$ = this.isCallStartedBs.asObservable();
 
-    constructor(private snackBar: MatSnackBar) { }
+    constructor(private snackBar: MatSnackBar) {
+     }
 
     public initPeer(): string {
         if (!this.peer || this.peer.disconnected) {
@@ -87,10 +88,9 @@ export class CallService {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
             this.localStreamBs.next(stream);
             this.peer.on('call', async (call) => {
-    
                 this.mediaCall = call;
                 this.isCallStartedBs.next(true);
-    
+
                 this.mediaCall.answer(stream);
                 this.mediaCall.on('stream', (remoteStream) => {
                     this.remoteStreamBs.next(remoteStream);
@@ -100,13 +100,13 @@ export class CallService {
                     this.isCallStartedBs.next(false);
                     console.error(err);
                 });
-                this.mediaCall.on('close', () => this.onCallClose());
-            });            
+                this.mediaCall.on('close', () => this.onCallClose())
+            });
         }
         catch (ex) {
             console.error(ex);
             this.snackBar.open(ex, 'Close');
-            this.isCallStartedBs.next(false);            
+            this.isCallStartedBs.next(false);
         }
     }
 
@@ -117,7 +117,8 @@ export class CallService {
         this.localStreamBs?.value.getTracks().forEach(track => {
             track.stop();
         });
-        this.snackBar.open('Call Ended', 'Close');
+        //this.snackBar.open('Call Ended', 'Close');
+        this.isCallStartedBs.next(false);
     }
 
     public closeMediaCall() {
